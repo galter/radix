@@ -1,0 +1,17 @@
+# Dependency files #
+*.d
+
+# Compiled objects #
+*.o
+*.so
+
+# Folders #
+bin/
+tests/
+
+# Editor backups #
+*~
+\#*#
+
+# HDA/ISO images #
+*.img
