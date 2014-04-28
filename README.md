@@ -9,20 +9,20 @@ Usage
 
 Compiling:
 
-`$ make`
+`make`
 
 Testing (qemu):
 
-`$ make test`
+`make test`
 
 Testing (qemu & gdb):
 
-`$ make test-gdb`
+`make test-gdb`
 
 Cleaning (objects):
 
-`$ make clean`
+`make clean`
 
 Cleaning (objects & tests:
 
-`$ make clean-all`
+`make clean-all`
