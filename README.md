@@ -23,6 +23,6 @@ Cleaning (objects):
 
 `make clean`
 
-Cleaning (objects & tests:
+Cleaning (objects & tests):
 
 `make clean-all`
