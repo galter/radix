@@ -52,7 +52,7 @@ $(HDAIMG): $(TESTDIR)
 	$(call print_init, Creating $(notdir $(HDAIMG)),,WHITE)
 
 	$(call print, Creating image)
-	$(call v_exec, 2, fallocate -l $(HDAIMGSIZE) $(HDAIMG))
+	$(call v_exec, 2, fallocate -l $(HDAIMGSIZE) $@)
 
 	$(call print, Partitioning)
 	$(call v_exec, 2, parted --script $@ mklabel msdos mkpart primary ext4 1 100%)
@@ -102,7 +102,7 @@ copy-kernel: $(KERNELIMG) $(HDAIMG)
 	$(call print, Mounting loop device partition $(LOOPDEVPART) to $(TESTDIR)/mnt)
 	$(call v_exec, 2, sudo mount $(LOOPDEVPART) $(TESTDIR)/mnt)
 
-	$(call print, Copying $(basename $(KERNELIMG)) to $(HDAIMG))
+	$(call print, Copying $(notdir $(KERNELIMG)) to $(HDAIMG))
 	$(call v_exec_null, 2, sudo cp -u -v $(KERNELIMG) $(TESTDIR)/mnt/boot/)
 
 	$(call print, Umounting loop device partition $(TESTDIR)/mnt)
@@ -132,5 +132,10 @@ clean:
 	$(call print_done, Cleaning object files)
 clean-all: clean
 	$(call print_init, Cleaning test files,, WHITE)
+	$(call v_exec, 2, sudo umount $(TESTDIR)/mnt 2> /dev/null || /bin/true)
+	$(call v_exec, 2, for dev in $(shell losetup -a | awk -F: /$(notdir $(HDAIMG))/'{print $$1}') ; do \
+		$(call v_exec_null, 2, sudo kpartx -d $$dev -s) ; \
+		$(call v_exec, 2, sudo losetup -d $$dev) ; \
+	done)
 	$(call v_exec_null, 2, rm -rf -v $(TESTDIR))
 	$(call print_done, Cleaning test files)
