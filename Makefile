@@ -129,6 +129,7 @@ test-gdb: copy-kernel
 clean:
 	$(call print_init, Cleaning object files,, WHITE)
 	$(call v_exec_null, 2, rm -rf -v $(OBJECTS) $(BINDIR))
+	$(call v_exec, 2, sudo umount $(TESTDIR)/mnt)
 	$(call print_done, Cleaning object files)
 clean-all: clean
 	$(call print_init, Cleaning test files,, WHITE)
